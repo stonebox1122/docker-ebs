@@ -1,0 +1,16 @@
+FROM oraclelinux:6
+MAINTAINER Vasu Balla <vasu@r12dba.com>
+
+RUN yum install -y yum-utils && \
+    yum-config-manager --enable public_ol6_addons && \
+    yum install -y oracle-ebs-server-R12-preinstall && \ 
+    mkdir /u01
+
+ADD EBS1227-U01.gz /u01
+COPY startall.sh /u01
+
+USER oracle
+WORKDIR /u01/install
+EXPOSE 1521 8000 7001 7002
+
+CMD exec /bin/sh /u01/startall.sh
